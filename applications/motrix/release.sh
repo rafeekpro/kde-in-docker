@@ -3,7 +3,7 @@
 set -eu
 set -o pipefail
 
-IMAGE="msjpq/motrix-vnc:latest"
+IMAGE="rafeekpro/motrix-vnc:latest"
 
 cd "$(dirname "$0")"
 docker build -t "$IMAGE" .

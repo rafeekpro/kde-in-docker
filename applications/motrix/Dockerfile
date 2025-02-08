@@ -1,6 +1,6 @@
-FROM msjpq/kde-vnc:bionic
+FROM rafeekpro/kde-vnc:bionic
 
-ARG VERSION="1.4.1"
+ARG VERSION="1.8.19"
 
 RUN mkdir /_install
 

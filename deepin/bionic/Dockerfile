@@ -8,7 +8,7 @@ RUN mkdir /_install && \
 
 
 
-FROM msjpq/wine-vnc:bionic
+FROM rafeekpro/wine-vnc:bionic
 
 # Pull Deps
 COPY --from=base /_install /_install

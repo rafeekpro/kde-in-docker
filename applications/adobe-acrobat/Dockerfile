@@ -7,7 +7,7 @@ RUN mkdir /_install && \
 
 
 
-FROM msjpq/firefox-vnc
+FROM rafeekpro/firefox-vnc
 
 
 # Install

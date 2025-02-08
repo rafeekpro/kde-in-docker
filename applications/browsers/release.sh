@@ -3,7 +3,7 @@
 set -eu
 set -o pipefail
 
-IMAGE="msjpq/browsers-vnc:latest"
+IMAGE="rafeekpro/browsers-vnc:latest"
 
 cd "$(dirname "$0")"
 docker build -t "$IMAGE" .

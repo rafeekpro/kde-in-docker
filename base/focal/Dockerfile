@@ -1,15 +1,16 @@
 FROM ubuntu:focal
 
-ARG S6_VER="2.0.0.1"
-ARG NO_VNC_VER="1.1.0"
-ARG WEB_SOCK_VER="0.9.0"
+ARG S6_VER="3.2.0.2"
+ARG NO_VNC_VER="1.5.0"
+ARG WEB_SOCK_VER="0.12.0"
 
 RUN mkdir /_install
+RUN apt-get update && apt-get install -y xz-utils
 
 ## S6 Overlay
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_VER}/s6-overlay-amd64.tar.gz /_install
-RUN tar xzf /_install/s6-overlay-amd64.tar.gz -C / --exclude="./bin" && \
-    tar xzf /_install/s6-overlay-amd64.tar.gz -C /usr ./bin
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_VER}/s6-overlay-x86_64.tar.xz /_install/s6-overlay-x86_64.tar.xz
+RUN tar -xJf /_install/s6-overlay-x86_64.tar.xz -C /
+ENTRYPOINT ["/init"]
 ENTRYPOINT ["/init"]
 
 

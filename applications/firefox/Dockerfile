@@ -1,4 +1,4 @@
-FROM msjpq/kde-vnc:bionic
+FROM rafeekpro/kde-vnc:bionic
 
 # Install
 RUN apt update && \

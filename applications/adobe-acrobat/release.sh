@@ -3,7 +3,7 @@
 set -eu
 set -o pipefail
 
-IMAGE="msjpq/adobe-acrobat-vnc:latest"
+IMAGE="rafeekpro/adobe-acrobat-vnc:latest"
 
 cd "$(dirname "$0")"
 docker build -t "$IMAGE" .

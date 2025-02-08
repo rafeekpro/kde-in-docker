@@ -1,4 +1,4 @@
-FROM msjpq/firefox-vnc
+FROM rafeekpro/firefox-vnc
 
 # Install
 RUN apt update && \
