@@ -1,4 +1,4 @@
-FROM rafeekpro/kde-vnc:bionic
+FROM rafeekpro/kde-vnc:noble
 
 # Install
 RUN apt update && \
