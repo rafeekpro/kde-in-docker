@@ -99,9 +99,9 @@ Really cool download client. [https://motrix.app/](https://motrix.app/)
 
 KDE on 18.04 lts. `620MB`
 
-**RUN** - `docker run -p 8080:8080 -p 5900:5900 rafeekpro/kde-vnc:bionic`
+**RUN** - `docker run -p 8080:8080 -p 5900:5900 rafeekpro/kde-vnc:noble`
 
-![bionic preview.png](https://github.com/ms-jpq/kde-in-docker/raw/daddy/preview/bionic.png)
+![noble preview.png](https://github.com/ms-jpq/kde-in-docker/raw/daddy/preview/noble.png)
 
 ---
 
@@ -123,6 +123,6 @@ KDE on 20.04 lts. `730MB`
 
 WINE 5.3 with dependencies. `1.3GB`
 
-**RUN** - `docker run -p 8080:8080 -p 5900:5900 rafeekpro/wine-vnc:bionic`
+**RUN** - `docker run -p 8080:8080 -p 5900:5900 rafeekpro/wine-vnc:noble`
 
 ![wine preview.png](https://github.com/ms-jpq/kde-in-docker/raw/daddy/preview/wine.png)
