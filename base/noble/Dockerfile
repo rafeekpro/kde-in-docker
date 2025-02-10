@@ -1,17 +1,37 @@
 FROM ubuntu:noble
 
-ARG S6_VER="3.2.0.2"
+ARG S6_OVERLAY_VERSION="3.2.0.2"
 ARG NO_VNC_VER="1.5.0"
 ARG WEB_SOCK_VER="0.12.0"
+
+RUN chmod 1777 /tmp
+
+# Set environment variable
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install essential utilities
+RUN apt update && \
+    apt install -y --no-install-recommends \
+        xz-utils unzip curl wget python3 python3-pip python3-venv \
+        nginx gettext-base \
+        plasma-desktop nautilus konsole \
+        tigervnc-standalone-server tigervnc-xorg-extension && \
+    apt autoremove -y && apt clean && rm -rf /var/lib/apt/lists/*
 
 # Create installation directory and install essential utilities
 RUN mkdir /_install && \
     apt update && apt install -y --no-install-recommends xz-utils unzip curl wget python3 python3-pip python3-venv nginx gettext-base && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install -y nginx xz-utils
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+CMD ["/usr/sbin/nginx"]    
+
 ## Install S6 Overlay
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_VER}/s6-overlay-x86_64.tar.xz /_install/s6-overlay-x86_64.tar.xz
-RUN tar -xJf /_install/s6-overlay-x86_64.tar.xz -C / && rm -r /_install
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
+RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz /tmp
+RUN tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz
 ENTRYPOINT ["/init"]
 
 ## KDE Desktop Environment
@@ -22,10 +42,12 @@ RUN apt update && \
     [ -f /usr/bin/startkde ] && sed -i 's/.*kdeinit/###&/' /usr/bin/startkde || echo "startkde not found, skipping sed" && \
     apt autoremove -y && apt clean && rm -rf /var/lib/apt/lists/*
 
+RUN chmod 1777 /tmp
+
 ## Install VNC Server
-RUN apt update && \
+RUN apt update --allow-releaseinfo-change && \
     apt install -y --no-install-recommends tigervnc-standalone-server tigervnc-xorg-extension && \
-    apt clean && rm -rf /var/lib/apt/lists/*
+    apt autoremove -y && apt clean && rm -rf /var/lib/apt/lists/*
 ENV DISPLAY=:0 \
     SCR_WIDTH=1600 \
     SCR_HEIGHT=900
@@ -63,6 +85,17 @@ WORKDIR /
 ## Copy configuration files
 COPY _root/ /
 COPY noble/root/ /
+RUN chmod -R +x /etc/services.d/
+RUN chmod +x /etc/cont-init.d/00--init-user.sh
+RUN chmod +x /etc/cont-init.d/00-desktop.sh
+RUN chmod +x /etc/cont-init.d/00-envsubst.sh
+RUN chmod +x /etc/cont-init.d/01-desktop.sh
+RUN chmod +x /etc/cont-init.d/01-nolock.sh
+RUN chmod +x /etc/services.d/kde/run
+RUN chmod +x /etc/services.d/nginx/run
+RUN chmod +x /etc/services.d/novnc/run
+RUN chmod +x /etc/services.d/tigervnc/run
+RUN chmod +x /etc/services.d/vncconfig/run
 
 ## Final cleanup to reduce image size
 RUN apt autoremove -y && apt clean && rm -rf /var/lib/apt/lists/*
